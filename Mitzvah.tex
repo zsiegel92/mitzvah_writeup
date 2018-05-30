@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+%\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+%\usepackage[]{units}
+%\usepackage{cite}
+%\usepackage{graphicx}
+%\usepackage[margin=1in]{geometry}
+%\usepackage{dsfont}
+%\usepackage{bbm}
+%\usepackage{color}
+\newcommand{\fa}{\ \forall \ }
+
+\title{Scheduling B'nai Mitzvot Using Linear Optimization}
+\author{Zachary Siegel}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Sinai Temple is the religious home of a thriving Jewish population in Los Angeles, CA. Among the congregants are 50-150 children between the ages of 12 and 13 in a given year. Through the Jewish practice of B'nai Mitzvah, each child ``begins" Jewish life after their 13th Hebrew birthday.
+
+With only 52 weeks in a year and three venues in which to hold a ceremony, Sinai Temple takes care to ensure that the B'nai Mitzvah schedule fits and meets the needs of the congregation.
+
+Concerns in planning dates for each of the children celebrating B'nai Mitzvot has been carried out by a committee at Sinai Temple in recent years. Many hours of human effort are required to personally verify that each family's reported needs are being met.
+
+Automation can both relieve the burden from community organizers planning B'nai Mitzvah dates, and simultaneously meet more and more complex requirements than those organizers on their own.
+
+This project is to automate and optimize the planning of B'nai Mitzvah dates within a congregation.
+
+\end{abstract}
+
+\section{Background}
+\subsection{Hebrew Calendar and Religious Considerations} A child's B'nai Mitzvah celebration, according to Jewish tradition, should not precede a child's 13th birthday. The Jewish world in this case measures age with respect to the Hebrew/Jewish calendar. A Hebrew birthday in a given year may occur before or after a Gregorian birthday, but is usually not far off.
+
+``The Hebrew lunar year is about eleven days shorter than the solar year and uses the 19-year Metonic cycle to bring it into line with the solar year, with the addition of an intercalary month every two or three years, for a total of seven times per 19 years" (\href{https://en.wikipedia.org/wiki/Hebrew_calendar}{Wikipedia ``Hebrew Calendar"}).
+
+Conversion between Hebrew and Gregorian dates is easily achieved using online tools (using the open source \href{https://www.hebcal.com/converter/}{Hebcal} or \href{https://www.chabad.org/calendar/1000year_cdo/aid/6225/jewish/Jewish-Hebrew-Date-Converter.htm}{a tool hosted by Chabad}). For this project, date conversion was automated using the Python programming language package \href{https://pypi.org/project/convertdate/}{ConvertDate} and the Javascript package \href{https://github.com/hebcal/hebcal-js}{Hebcal}.
+
+B'nai Mitzvot ceremonies are generally held on Saturday mornings. Certain dates are not appropriate for the celebrations, such as Jewish high holidays. For most families, common American holidays are not feasible dates.
+
+
+
+\subsection{Linear Optimization}
+
+Some real-world problems can be modeled with constraints that are \emph{linear} in some quantity. This means that as a value changes, it affects the quality or feasibility of a solution by an amount proportional to the value itself.
+
+For example, the quality of a route travelled increases as its total time or distance decreases; this is a linear relationship. In contrast, the value of a session with a personal trainer increases as the duration of the session increases, but only to a point, after which the value no longer increases (say, 1.5 hours).
+
+\emph{Linear optimization} is the process of finding a solution to a problem that is 1) \emph{feasible}, meaning it satisfies constraints (which are themselves linear), and 2) \emph{minimal/maximal}, meaning that it minimizes or maximizes a measurement of the ``cost'' or ``quality'' of the solution, expressed through linear relationships with the parts of the solution. The \emph{objective function} of a \emph{linear model} is a measurement of the desirability of the solution.
+
+If a problem can be articulated through a linear model, its optimal solution can be found trivially unless it is extraordinarily complex. Algorithms to solve linear optimization models predate computers by a wide margin. The most complex linear optimization models are used in global logistics operations, such as fleet deployment and supply chain management. Simple linear models are used by GPS route guidance systems.
+
+There is a wide range of problems to which linear optimization is applicable. Many scheduling problems are solved efficiently by linear optimization.
+
+\section{Motivating Example}
+
+A linear model may describe a scheduling problem in the following way.
+
+Suppose Saturday, March 5th is a child's Hebrew birthday, and that date is $25$ weeks from today. The variable $x$ can represent the week chosen for a Bar Mitzvah, from $0$ to $52$, where $0$ represents \emph{this} Saturday, and $52$ represents Saturday \emph{one year from today}.
+
+The ideal value for $x$ would be $25$, the child's Hebrew birth date. The date must be after the birthday, so $x\ge25$ is the first constraint.
+
+Now suppose the child's family is unavailable March 5th and 11th. Then $x \ne 25$ and $x \ne 26$ are additional constraints.
+
+For every week after Saturday, March 5th, a cost of $2$ is applied to the objective function of the model.
+
+So far, our model is:
+
+\begin{align*}
+&\text{minimize} &2x\\
+&\text{such that} & x \ge 25\\
+&& x\ne 25\\
+&& x\ne 26\\
+\end{align*}
+There are no terms involving $x^2$, $x^3$, $\frac{1}{x}$, $2^x$, $sin(x)$; only \emph{linear} constraints such as $x\ge 25$ (or $10x \ge -39$, for another example) are permitted for a model to be \emph{linear}.
+
+
+It may seem clear that an optimal solution is $27$. In this basic example, that would be a good solution. However, as articulated so far, this model would prefer a solution such as $26.1$ or $26.00001$. It turns out that $x \ne 26$ is \emph{not} a linear constraint, and the optimal solution is undefined due to this constraint. By restricting $x$ to be a \emph{whole number} (an \emph{integer}), however, we can include these constraints. Restricting variables to integers greatly increases the computational cost of solving a linear model, but allows whoever is articulating the model to use the same simple language, and the computer calculating the solution to employ many of the same efficient methods. This process is called \emph{integer linear programming}.
+
+Our model can now be fully realized as
+
+\begin{align*}
+&\text{minimize} &2x\\
+&\text{such that} & x \ge 25\\
+&& x\ne 25\\
+&& x\ne 26\\
+&& x \text{ is an \emph{integer}}
+\end{align*}
+
+Any of the ubiquitous and efficient tools for solving linear optimization problems can be employed to solve this problem.
+
+A scheduling problem involving many events and more complex requirements can become more difficult to articulate using a linear model, but many ideas can be expressed through a linear model not so different from this one.
+
+
+\section{Method: The Linear Model}
+The model solved to assign B'nai Mitzvah dates employs integer linear programming to choose for each student a \emph{date} and a \emph{venue} for their B'nai Mitzvah at Sinai Temple.
+
+\subsection{The Decision Variables}
+
+
+Every student is assigned an index from $1$ to $n$, where there are $n$ total students. Every venue is assigned an index from $1$ to $m$, where there are $m$ total venues (Sinai Temple has three venues). Every date under consideration, each a Saturday, is given an index denoting the number of weeks from \emph{this} Saturday on which it falls.
+
+A variable is created for every combination of student, venue, and date, and takes on the following values:
+
+\begin{equation}\label{x}
+x_{ijk}=
+\begin{cases} 
+      1 & \text{student $i$ has BM at venue $j$ on date $k$} \\
+      0 & \text{otherwise}
+   \end{cases}
+\end{equation}
+
+The goal is for the solution to a linear model to assign values to the variables $x_{ijk}$ such that the assignments honor constraints, and are optimal relative to some objective function. In order to achieve this, the constraints and objective function just need to be articulated as linear functions in the variables and a solver can produce a solution.
+
+Additional decision variables $m_{j,k,l}$ are defined in the following way:
+
+\begin{equation}\label{m}
+m_{j,k,l}=
+\begin{cases} 
+      1 & \text{At least one student from school $l$ has a BM at venue $j$ on date $k$} \\
+      0 & \text{otherwise}
+   \end{cases}
+\end{equation}
+
+In this work, students are indexed by the order in which information was submitted. Venues are ordered arbitrarily from $1$ to $3$, as there are $3$ venues at Sinai Temple suitable for a B'nai Mitzvah ceremony. Dates are all Saturdays, indexed by the number of weeks from the upcoming Saturday at time of optimization.
+
+\begin{itemize}
+\item $i$ is the index of the $i$'th student
+\item $j$ is the index of the $j$'th venue
+\item $k$ is the index of the $k$'th date under consideration
+\item $l$ is the index of the $l$'th school
+\end{itemize}
+
+
+
+
+\subsection{The Constraints}
+
+Scheduling is subject to the following constraints:
+
+\begin{enumerate}
+\item A student cannot have their BM before their 13th Hebrew birthday. To avoid potentially violating this constraint for students born after sundown, one day is added to every 13th birthday.
+\item Each venue can accommodate 0, 1, or 2 students on a given weekend, depending on the weekend.
+\item Some venues are not available on some weekends.
+\item Students who attend the same academic school cannot have BMs on the same day at different venues (lest the class be split)
+\item Families can specify dates when they will be \emph{unavailable}. Those requests are to be honored.
+\item Twins who request a shared ceremony are to share a ceremony.
+\end{enumerate}
+
+
+These constraints can all be articulated with the following linear constraints on $x_{i,j,k}$ and $m_{j,k,l}$ as defined in \eqref{m} and \eqref{x}:
+
+\begin{enumerate}
+
+\item Let $k_{b_i}$ be the index of the earliest Saturday on which student $i$ can have their B'nai Mitzvah. Constraint:
+\[
+x_{i,j,k} = 0 \fa k < k_{b_i}
+\]
+
+\item Let $c_{j,k}$ be the capacity of venue $j$ on day $k$. For all dates $k$, $c_{j,k}$ is less than the daily size capacity of venue $j$, which is one or two BMs. Constraint:
+\[
+\sum_{i} x_{i,j,k} \le c_{j,k} \fa j,k
+\]
+
+\item If venue $j$ is unavailable on weekend $k$, $c_{j,k}=0$. The previous constraint is sufficient.
+
+\item Let $l_i$ be the index of the school attended by student $i$. The following two constraints ensures that no two schools can have students holding BMs at different venues on the same day:
+\begin{align*}
+\sum_j m_{j,k,l} \le 1 & \fa k,l \\
+x_{i,j,k} \le m_{j,k,l} & \fa j,k,l \fa i \text{ where } i_l = l
+\end{align*}
+
+\item Let $D_i = \{k_{i,1},k_{i,2},\ldots, k_{i,n_{d,i}} \}$ denote the dates on which student $i$ \emph{cannot} have their BM, as specified by their family. The following basic constraint ensures that no student is assigned a date they requested not to have:
+\[
+x_{i,j,k} = 0 \fa j, \fa k \in D_i, \fa i
+\]
+
+\item If students $i_1$ and $i_2$ are twins requesting a shared date, then the two students are merged before optimization into one student, here $i_{1',2'}$, such that
+\[
+D_{i_{1',2'}} = D_{i_1} \cup D_{i_2}
+\]
+Twins' venue preferences are averaged, in case a family specified different preferences for the children.
+
+
+\end{enumerate}
+
+
+\subsection{The Objective Function}
+
+For every student, the following affects the optimality of a solution:
+
+\begin{itemize}
+\item The number of weekend after their 13th Hebrew birthday. More weeks after the earliest possible date is less desirable.
+\item The preferences families report for each venue.
+\end{itemize}
+
+The following ``soft constraints'' were incorporated into the objective function. That means they were not ``constraints'', and could be violated, but imposed a penalty on doing so.
+
+\begin{itemize}
+\item Specifically requested dates were made more desirable.
+\item Requests for students to have their own ceremony (not a shared ceremony).
+\end{itemize}
+
+\end{document}
