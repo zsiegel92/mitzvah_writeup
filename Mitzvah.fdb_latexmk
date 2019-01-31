@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1548902270 "Mitzvah.tex" "Mitzvah.pdf" "Mitzvah" 1548902271
+["pdflatex"] 1548902587 "Mitzvah.tex" "Mitzvah.pdf" "Mitzvah" 1548902588
   "/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -145,11 +145,11 @@
   "/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1478059407 1888048 f2c5faed5981a516f406b2ccc20bff71 ""
   "/usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt" 1463979169 3873397 413fbfbbedb8e719ddc392043a7add02 ""
   "/usr/local/texlive/2016/texmf.cnf" 1463979140 577 2938757e76f31531e65cc647e3507693 ""
-  "Mitzvah.aux" 1548902271 1635 03ee7a90547d406b8f8d4689cf1930d5 ""
-  "Mitzvah.out" 1548902271 524 84d045e48032563dd8482be0235685c5 ""
-  "Mitzvah.tex" 1548902269 13029 81945a19197383f7064d86596642f07b ""
+  "Mitzvah.aux" 1548902587 1635 03ee7a90547d406b8f8d4689cf1930d5 ""
+  "Mitzvah.out" 1548902587 524 84d045e48032563dd8482be0235685c5 ""
+  "Mitzvah.tex" 1548902586 13048 3840a20995958766e9a2778831aedb9f ""
   (generated)
-  "Mitzvah.out"
-  "Mitzvah.log"
   "Mitzvah.aux"
   "Mitzvah.pdf"
+  "Mitzvah.out"
+  "Mitzvah.log"

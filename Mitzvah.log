@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  30 JAN 2019 18:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  30 JAN 2019 18:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -671,7 +671,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 242.
 Here is how much of TeX's memory you used:
  15770 strings out of 493014
  299130 string characters out of 6133351
- 359028 words of memory out of 5000000
+ 359039 words of memory out of 5000000
  19019 multiletter control sequences out of 15000+600000
  52503 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -692,7 +692,7 @@ lmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr8.pfb></u
 sr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/201
 6/texmf-dist/fonts/type1/public/lm/lmsy6.pfb>
-Output written on Mitzvah.pdf (7 pages, 226745 bytes).
+Output written on Mitzvah.pdf (7 pages, 226291 bytes).
 PDF statistics:
  162 PDF objects out of 1000 (max. 8388607)
  137 compressed objects within 2 object streams
