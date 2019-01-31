@@ -12,6 +12,38 @@
 %\usepackage{color}
 \newcommand{\fa}{\ \forall \ }
 
+
+\usepackage{lmodern} % Only for ribbon
+\usepackage{tikz} % Only for ribbon
+\usetikzlibrary{calc} % Only for ribbon
+\newcommand{\stripskip}{2} % Only for ribbon
+\newcommand{\stripwidth}{4} % Only for ribbon
+
+\newcommand{\unfinished}{
+	\begin{tikzpicture}[
+	    overlay,
+	    remember picture,
+	    ribbon/.style={anchor=center, rotate = -45}
+	]
+	    \coordinate (A) at ($ (current page.north east) + (-\stripskip,0) $);
+	    \coordinate (A') at ($(A) + (-\stripwidth,0) $);
+
+	    \coordinate (B) at ($ (current page.north east) + (0,-\stripskip) $);
+	    \coordinate (B') at ($(B) + (0,-\stripwidth) $);
+
+	    \fill [red] (A) -- (A') -- (B') -- (B) -- cycle;
+
+	    \coordinate (tempA) at ($(A)!.5!(A')$);
+	    \coordinate (tempB) at ($(B)!.5!(B')$);
+
+	    \node [ribbon, text width=2cm](text) at ($(tempA)!.5!(tempB)$) {Unfinished or Inactive};
+
+	\end{tikzpicture}
+}
+
+
+
+
 \title{Scheduling B'nai Mitzvot Using Linear Optimization}
 \author{Zachary Siegel}
 
@@ -19,6 +51,8 @@
 \begin{document}
 
 \maketitle
+\unfinished
+
 
 \begin{abstract}
 Sinai Temple is the religious home of a thriving Jewish population in Los Angeles, CA. Among the congregants are 50-150 children between the ages of 12 and 13 in a given year. Through the Jewish practice of B'nai Mitzvah, each child ``begins" Jewish life after their 13th Hebrew birthday.
@@ -108,7 +142,7 @@ A variable is created for every combination of student, venue, and date, and tak
 
 \begin{equation}\label{x}
 x_{ijk}=
-\begin{cases} 
+\begin{cases}
       1 & \text{student $i$ has BM at venue $j$ on date $k$} \\
       0 & \text{otherwise}
    \end{cases}
@@ -120,7 +154,7 @@ Additional decision variables $m_{j,k,l}$ are defined in the following way:
 
 \begin{equation}\label{m}
 m_{j,k,l}=
-\begin{cases} 
+\begin{cases}
       1 & \text{At least one student from school $l$ has a BM at venue $j$ on date $k$} \\
       0 & \text{otherwise}
    \end{cases}
